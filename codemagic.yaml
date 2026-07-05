@@ -8,11 +8,10 @@ workflows:
         PACKAGE_NAME: "com.evilcrow.rf2controller"
     working_directory: mobile_app
     scripts:
+      - name: Generate missing iOS project files
+        script: flutter create --platforms=ios .
       - name: Get Flutter packages
         script: flutter pub get
-      - name: ios pod install
-        script: |
-          cd ios && pod install
       - name: Build unsigned iOS app
         script: flutter build ios --release --no-codesign
       - name: Package IPA
