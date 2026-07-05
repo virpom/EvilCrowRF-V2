@@ -21,6 +21,8 @@ workflows:
           mkdir Payload
           cp -R Runner.app Payload/
           zip -r ../ipa/EvilCrowRF.ipa Payload
+          echo "--- IPA created ---"
+          ls -la ../ipa/
     artifacts:
-      - mobile_app/build/ios/ipa/EvilCrowRF.ipa
+      - mobile_app/build/ios/ipa/*.ipa
 
