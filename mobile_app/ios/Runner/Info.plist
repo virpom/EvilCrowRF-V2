@@ -53,6 +53,8 @@
 	<string>Bluetooth is required to communicate with EvilCrow RF hardware.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location access is required for iOS to discover nearby Bluetooth Low Energy (BLE) devices like EvilCrow RF.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Location access is required for background Bluetooth Low Energy (BLE) device discovery.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>

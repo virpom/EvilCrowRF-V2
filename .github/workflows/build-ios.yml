@@ -28,6 +28,7 @@ jobs:
           /usr/libexec/PlistBuddy -c "Add :NSBluetoothAlwaysUsageDescription string 'Bluetooth required to connect to EvilCrow RF devices.'" "$PLIST" 2>/dev/null || /usr/libexec/PlistBuddy -c "Set :NSBluetoothAlwaysUsageDescription 'Bluetooth required to connect to EvilCrow RF devices.'" "$PLIST"
           /usr/libexec/PlistBuddy -c "Add :NSBluetoothPeripheralUsageDescription string 'Bluetooth required to communicate with EvilCrow RF hardware.'" "$PLIST" 2>/dev/null || /usr/libexec/PlistBuddy -c "Set :NSBluetoothPeripheralUsageDescription 'Bluetooth required to communicate with EvilCrow RF hardware.'" "$PLIST"
           /usr/libexec/PlistBuddy -c "Add :NSLocationWhenInUseUsageDescription string 'Location access required for iOS to discover nearby BLE devices.'" "$PLIST" 2>/dev/null || /usr/libexec/PlistBuddy -c "Set :NSLocationWhenInUseUsageDescription 'Location access required for iOS to discover nearby BLE devices.'" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Add :NSLocationAlwaysUsageDescription string 'Location access required for background BLE device discovery.'" "$PLIST" 2>/dev/null || /usr/libexec/PlistBuddy -c "Set :NSLocationAlwaysUsageDescription 'Location access required for background BLE device discovery.'" "$PLIST"
           /usr/libexec/PlistBuddy -c "Add :UIBackgroundModes array" "$PLIST" 2>/dev/null
           /usr/libexec/PlistBuddy -c "Add :UIBackgroundModes:0 string bluetooth-central" "$PLIST" 2>/dev/null
           /usr/libexec/PlistBuddy -c "Add :LSApplicationQueriesSchemes array" "$PLIST" 2>/dev/null
