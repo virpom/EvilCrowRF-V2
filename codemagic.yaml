@@ -4,26 +4,25 @@ workflows:
     environment:
       xcode: latest
       cocoapods: default
-      vars:
-        PACKAGE_NAME: "com.evilcrow.rf2controller"
     scripts:
       - name: Generate missing iOS project files
         script: |
           cd mobile_app
           flutter create --platforms=ios .
-      - name: Add BLE permissions to Info.plist
+      - name: Configure iOS permissions
         script: |
-          cd mobile_app/ios/Runner
-          /usr/libexec/PlistBuddy -c "Add :NSBluetoothAlwaysUsageDescription string 'Bluetooth is required to connect to EvilCrow RF devices for remote control, signal scanning, and firmware updates.'" Info.plist 2>/dev/null
-          /usr/libexec/PlistBuddy -c "Set :NSBluetoothAlwaysUsageDescription 'Bluetooth is required to connect to EvilCrow RF devices for remote control, signal scanning, and firmware updates.'" Info.plist 2>/dev/null
-          /usr/libexec/PlistBuddy -c "Add :NSBluetoothPeripheralUsageDescription string 'Bluetooth is required to communicate with EvilCrow RF hardware.'" Info.plist 2>/dev/null
-          /usr/libexec/PlistBuddy -c "Set :NSBluetoothPeripheralUsageDescription 'Bluetooth is required to communicate with EvilCrow RF hardware.'" Info.plist 2>/dev/null
-          /usr/libexec/PlistBuddy -c "Add :NSLocationWhenInUseUsageDescription string 'Location access is required for iOS to discover nearby BLE devices.'" Info.plist 2>/dev/null
-          /usr/libexec/PlistBuddy -c "Set :NSLocationWhenInUseUsageDescription 'Location access is required for iOS to discover nearby BLE devices.'" Info.plist 2>/dev/null
-          /usr/libexec/PlistBuddy -c "Add :UIBackgroundModes array" Info.plist 2>/dev/null
-          /usr/libexec/PlistBuddy -c "Add :UIBackgroundModes:0 string bluetooth-central" Info.plist 2>/dev/null
-          echo "--- Info.plist updated ---"
-          /usr/libexec/PlistBuddy -c "Print" Info.plist | grep -E "Bluetooth|Location|Background"
+          PLIST=mobile_app/ios/Runner/Info.plist
+          /usr/libexec/PlistBuddy -c "Add :NSBluetoothAlwaysUsageDescription string 'Bluetooth required to connect to EvilCrow RF devices.'" "$PLIST" 2>/dev/null || /usr/libexec/PlistBuddy -c "Set :NSBluetoothAlwaysUsageDescription 'Bluetooth required to connect to EvilCrow RF devices.'" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Add :NSBluetoothPeripheralUsageDescription string 'Bluetooth required to communicate with EvilCrow RF hardware.'" "$PLIST" 2>/dev/null || /usr/libexec/PlistBuddy -c "Set :NSBluetoothPeripheralUsageDescription 'Bluetooth required to communicate with EvilCrow RF hardware.'" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Add :NSLocationWhenInUseUsageDescription string 'Location access required for iOS to discover nearby BLE devices.'" "$PLIST" 2>/dev/null || /usr/libexec/PlistBuddy -c "Set :NSLocationWhenInUseUsageDescription 'Location access required for iOS to discover nearby BLE devices.'" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Add :UIBackgroundModes array" "$PLIST" 2>/dev/null
+          /usr/libexec/PlistBuddy -c "Add :UIBackgroundModes:0 string bluetooth-central" "$PLIST" 2>/dev/null
+          /usr/libexec/PlistBuddy -c "Add :LSApplicationQueriesSchemes array" "$PLIST" 2>/dev/null
+          /usr/libexec/PlistBuddy -c "Add :LSApplicationQueriesSchemes:0 string https" "$PLIST" 2>/dev/null
+          /usr/libexec/PlistBuddy -c "Add :LSApplicationQueriesSchemes:1 string http" "$PLIST" 2>/dev/null
+          echo "--- Info.plist final ---"
+          /usr/libexec/PlistBuddy -c "Print" "$PLIST" | grep -E "Bluetooth|Location|Background|QueriesSchemes"
+      - name: Get Flutter packages
         script: |
           cd mobile_app
           flutter pub get
@@ -43,4 +42,3 @@ workflows:
           ls -la ../ipa/
     artifacts:
       - mobile_app/build/ios/ipa/*.ipa
-

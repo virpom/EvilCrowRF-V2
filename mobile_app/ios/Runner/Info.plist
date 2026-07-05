@@ -57,5 +57,10 @@
 	<array>
 		<string>bluetooth-central</string>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https</string>
+		<string>http</string>
+	</array>
 </dict>
 </plist>
